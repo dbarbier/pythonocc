@@ -21,16 +21,19 @@
 #define __OCC3d_Renderer__
 
 #ifdef WNT
-#include <WNT_Window.hxx>
-#include <WNT_WDriver.hxx>
-#include <Graphic3d_WNTGraphicDevice.hxx>
-#include <WNT_GraphicDevice.hxx>
+  #include <WNT_Window.hxx>
+  #include <WNT_WDriver.hxx>
+  #include <Graphic3d_WNTGraphicDevice.hxx>
+  #include <WNT_GraphicDevice.hxx>
+#elif defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+  #include <Graphic3d_GraphicDevice.hxx>
+  #include <Cocoa_Window.hxx>
 #else
-#include <cstdlib>
-#include <Xw_Window.hxx>
-#include <Xw_Driver.hxx>
-#include <Graphic3d_GraphicDevice.hxx>
-#include <Xw_GraphicDevice.hxx>
+  #include <cstdlib>
+  #include <Xw_Window.hxx>
+  #include <Xw_Driver.hxx>
+  #include <Graphic3d_GraphicDevice.hxx>
+  #include <Xw_GraphicDevice.hxx>
 #endif
 
 #include <AIS_InteractiveContext.hxx>
@@ -70,11 +73,14 @@ protected:
    Handle_V3d_Viewer myV3dViewer;
    Handle_V3d_View myV3dView;
    #ifdef WNT
-   Handle_WNT_Window myWindow;
-   Handle_Graphic3d_WNTGraphicDevice gd;
+     Handle_WNT_Window myWindow;
+     Handle_Graphic3d_WNTGraphicDevice gd;
+   #elif defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+     Handle_Cocoa_Window myWindow;
+     Handle_Graphic3d_GraphicDevice gd;
    #else
-   Handle_Xw_Window myWindow;
-   Handle_Graphic3d_GraphicDevice gd;
+     Handle_Xw_Window myWindow;
+     Handle_Graphic3d_GraphicDevice gd;
    #endif
 };
 
@@ -94,11 +100,14 @@ protected:
    Handle_V3d_Viewer myV3dViewer;
    Handle_NIS_View myNISView;
    #ifdef WNT
-   Handle_WNT_Window myWindow;
-   Handle_Graphic3d_WNTGraphicDevice gd;
+     Handle_WNT_Window myWindow;
+     Handle_Graphic3d_WNTGraphicDevice gd;
+   #elif defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+     Handle_Cocoa_Window myWindow;
+     Handle_Graphic3d_GraphicDevice gd;
    #else
-   Handle_Xw_Window myWindow;
-   Handle_Graphic3d_GraphicDevice gd;
+     Handle_Xw_Window myWindow;
+     Handle_Graphic3d_GraphicDevice gd;
    #endif
 };
 
@@ -119,13 +128,16 @@ protected:
    Handle_V2d_Viewer myV2dViewer;
    Handle_V2d_View myV2dView;
    #ifdef WNT
-   Handle_WNT_Window myWindow;
-   Handle_WNT_GraphicDevice gd;
-   Handle_WNT_WDriver myDriver;
+     Handle_WNT_Window myWindow;
+     Handle_WNT_GraphicDevice gd;
+     Handle_WNT_WDriver myDriver;
+   #elif defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+     Handle_Cocoa_Window myWindow;
+     Handle_Graphic3d_GraphicDevice gd;
    #else
-   Handle_Xw_Window myWindow;
-   Handle_Graphic3d_GraphicDevice gd;
-   Handle_Xw_Driver myDriver;
+     Handle_Xw_Window myWindow;
+     Handle_Graphic3d_GraphicDevice gd;
+     Handle_Xw_Driver myDriver;
    #endif
 };
 

@@ -19,6 +19,10 @@
 
 #include "Visualization.h"
 
+#if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+  extern void ViewerTest_SetCocoaEventManagerView (const Handle(Cocoa_Window)& theWindow);
+#endif
+
 Display3d::Display3d()
 {
 }
@@ -33,16 +37,21 @@ void Display3d::Init(int window_handle)
 	printf("Display3d class initialization starting ...\n");
 	short hi = static_cast<short>(window_handle >> 16);
 	short lo = static_cast<short>(window_handle);
-	// Create Graphic Device and Window
+  // Create Graphic Device and Window
 	#ifdef WNT
       gd = new Graphic3d_WNTGraphicDevice();
-      printf("WNT Graphic device created.\n");
+      printf("WNT - Graphic device created.\n");
       myWindow = new WNT_Window( gd ,static_cast<Standard_Integer>(hi),static_cast<Standard_Integer>(lo));
       printf("WNT window created.\n");
       myWindow->SetFlags(WDF_NOERASEBKGRND); //prevent flickering
-    #else
+  #elif defined(__APPLE__) && !defined(MACOSX_USE_GLX)
       gd = new Graphic3d_GraphicDevice(std::getenv("DISPLAY"));
-      printf("Graphic device created.\n");
+      printf("OSX - Graphic device created.\n");
+      myWindow = new Cocoa_Window ("pythonOCC Cocoa_Window",50, 50, 640, 480);
+      printf("Cocoa window created.\n");
+  #else
+      gd = new Graphic3d_GraphicDevice(std::getenv("DISPLAY"));
+      printf("Unix/Linux - Graphic device created.\n");
       myWindow =new Xw_Window(gd,static_cast<Standard_Integer>(hi),static_cast<Standard_Integer>(lo),Xw_WQ_3DQUALITY);
       printf("Xw_Window created.\n");
     #endif

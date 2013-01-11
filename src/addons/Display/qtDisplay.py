@@ -20,7 +20,7 @@
 import os
 
 import sys
-from PyQt4 import QtCore, QtGui
+from PySide import QtCore, QtGui
 import OCCViewer
 
 
@@ -104,7 +104,7 @@ class qtViewer3d(qtBaseViewer):
         self._drawtext = True
 
     def InitDriver(self):
-        self._display = OCCViewer.Viewer3d(self.GetHandle())
+        self._display = OCCViewer.Viewer3d(2)#self.GetHandle())
         self._display.Create()
         self._display.DisplayTriedron()
         self._display.SetModeShaded()
